@@ -1,4 +1,4 @@
-In some architectures it is nice to have a Singleton.   But what if we have a distributed network and we want the singleton pattern?     
+In some architectures it is nice to have a Singleton.   But what if we have a distributed system and we want the singleton pattern?     
 
 To learn more about this pattern please visit this link: https://en.wikipedia.org/wiki/Singleton_pattern
 
