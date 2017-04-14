@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cache
+        xmlns="http://geode.apache.org/schema/cache"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://geode.apache.org/schema/cache http://geode.apache.org/schema/cache/cache-1.0.xsd"
+        version="1.0">
+
+
+    <cache-server port="0">
+        <client-subscription eviction-policy="entry" capacity="10000" disk-store-name="client_overflow"/>
+    </cache-server>
+
+    <disk-store name="client_overflow"/>
+    <disk-store name="test_data_overflow"/>
+    <disk-store name="pdx_meta_data"/>
+
+    <pdx read-serialized="false" persistent="true" disk-store-name="pdx_meta_data">
+        <!-- <pdx-serializer>
+             <class-name>org.apache.geode.pdx.ReflectionBasedAutoSerializer</class-name>
+             <parameter name="classes">
+                 <string>com.test.foo.SomeData</string>
+             </parameter>
+         </pdx-serializer>-->
+    </pdx>
+
+    <!-- here are all of the options for region short cuts:
+        PARTITION
+        PARTITION_REDUNDANT
+        PARTITION_PERSISTENT
+        PARTITION_REDUNDANT_PERSISTENT
+        PARTITION_OVERFLOW
+        PARTITION_REDUNDANT_OVERFLOW
+        PARTITION_PERSISTENT_OVERFLOW
+        PARTITION_REDUNDANT_PERSISTENT_OVERFLOW
+        PARTITION_HEAP_LRU
+        PARTITION_REDUNDANT_HEAP_LRU
+        REPLICATE
+        REPLICATE_PERSISTENT
+        REPLICATE_OVERFLOW
+        REPLICATE_PERSISTENT_OVERFLOW
+        REPLICATE_HEAP_LRU
+        LOCAL
+        LOCAL_PERSISTENT
+        LOCAL_HEAP_LRU
+        LOCAL_OVERFLOW
+        LOCAL_PERSISTENT_OVERFLOW
+        PARTITION_PROXY
+        PARTITION_PROXY_REDUNDANT
+        REPLICATE_PROXY
+        -->
+    <region name="TestRegion" refid="PARTITION_REDUNDANT_OVERFLOW">
+        <region-attributes off-heap="true" disk-store-name="test_data_overflow">
+            <!-- original and X other copies.   Number of buckets just make it a prime number to get
+            decent spread of data.   If the number of buckets isn't prime the data tends to cluster. -->
+            <partition-attributes redundant-copies="1" total-num-buckets="113"/>
+        </region-attributes>
+    </region>
+
+    <function-service>
+        <function>
+            <class-name>org.apache.geode.demo.TestWhoIsGridSingleton</class-name>
+        </function>
+    </function-service>
+    <!-- I put the following in as place mark to talk about enabling GemFire to watch
+    and make sure the system doesn't run out of memory -->
+    <resource-manager critical-heap-percentage="80" eviction-heap-percentage="75"/>
+    
+    <initializer>
+        <class-name>org.apache.geode.demo.GridSingleton</class-name>
+    </initializer>
+</cache>
