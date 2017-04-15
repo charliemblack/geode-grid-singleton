@@ -59,7 +59,9 @@ thread.start();
         ├── java
         └── resources
 ```
+## Video Walkthrough
 
+If you would like there is a video walk through posted on YouTube:  https://youtu.be/xHYN20hbPHU
 
 ## Example Run Through of the demo
 
